@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "dssjoblom",
+      "name": "dssjoblom",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12595797?v=4",
+      "profile": "https://github.com/dssjoblom",
+      "contributions": [
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "quest-driven-development",
+  "projectOwner": "rendall",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

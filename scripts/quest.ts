@@ -1,31 +1,38 @@
-import { Machine, actions, assign } from 'xstate';
+import { Machine, actions, assign } from "xstate";
 
 // q.v. https://github.com/statecharts/xstate-viz
 
 const questMachine = Machine<{ look: string }>({
-  id: 'quest',
-  initial: 'start',
+  id: "quest",
+  initial: "start",
   context: {
-    look: "This is an open field west of a white house, with a boarded front door. There is a small mailbox here. A rubber mat saying 'Welcome to Zork!' lies by the door."
+    look:
+      "This is an open field west of a white house, with a boarded front door. There is a small mailbox here. A rubber mat saying 'Welcome to Zork!' lies by the door.",
   },
   states: {
     start: {
-      entry: assign({ look: (context, event) => context.look = 'The mailbox is closed.' }),
+      entry: assign({
+        look: (context, event) => (context.look = "The mailbox is closed."),
+      }),
       on: {
-        OPEN_MAILBOX: 'mailboxOpened',
-      }
+        OPEN_MAILBOX: "mailboxOpened",
+      },
     },
     mailboxOpened: {
-      entry: assign({ look: (context, event) => context.look = 'You open the mailbox, revealing a small leaflet.' }),
+      entry: assign({
+        look: (context, event) =>
+          (context.look = "You open the mailbox, revealing a small leaflet."),
+      }),
       on: {
-        CLOSE_MAILBOX: 'start',
-        READ_LEAFLET: 'success'
-      }
+        CLOSE_MAILBOX: "start",
+        READ_LEAFLET: "success",
+      },
     },
     success: {
       // entry:'notifySuccess',
       entry: assign({
-        look: (context, event) => context.look = `(first taking the small leaflet)
+        look: (context, event) =>
+          (context.look = `(first taking the small leaflet)
                           WELCOME TO ZORK
 
     ZORK is a game of adventure, danger, and low cunning.  In it you will explore some of the most amazing territory ever seen by mortal man.  Hardened adventurers have run screaming from the terrors contained within!
@@ -41,8 +48,9 @@ const questMachine = Machine<{ look: string }>({
     Direct inquiries, comments, etc. by Net mail to erd@infinet.com.
 
     (c) Copyright 1978,1979 Massachusetts Institute of Technology. 
-                     All rights reserved.`}),
-      type: 'final'
-    }
-  }
+                     All rights reserved.`),
+      }),
+      type: "final",
+    },
+  },
 });

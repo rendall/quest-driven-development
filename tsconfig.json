@@ -3,7 +3,7 @@
   "include": ["./src/docs/"],
   "compilerOptions": {
     "moduleResolution": "node",
-    "lib": ["DOM","ES6"],
-    "types":["node", "svelte"]
+    "lib": ["DOM", "ES6"],
+    "types": ["node", "svelte"]
   }
 }

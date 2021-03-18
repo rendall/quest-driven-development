@@ -1,7 +1,7 @@
-import QDD from './QDD.svelte';
+import QDD from "./QDD.svelte";
 
 const app = new QDD({
-	target: document.body
+  target: document.body,
 });
 
 export default app;

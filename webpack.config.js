@@ -1,15 +1,15 @@
 const path = require("path");
 const webpack = require("webpack");
-const sveltePreprocess = require("svelte-preprocess")
+const sveltePreprocess = require("svelte-preprocess");
 
-const preprocess = sveltePreprocess({ typescript: true })
+const preprocess = sveltePreprocess({ typescript: true });
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 // const mode = process.env.NODE_ENV || "development"
-const mode = process.env.NODE_ENV || "production"
-const isDevelopmentMode = mode === "development"
-const isProductionMode = mode === "production"
+const mode = process.env.NODE_ENV || "development";
+const isDevelopmentMode = mode === "development";
+const isProductionMode = mode === "production";
 
 module.exports = {
   mode,
@@ -17,7 +17,7 @@ module.exports = {
   entry: {
     "assets/questBuilder": "./src/docs/assets/questBuilder.ts",
     "assets/visualizer": "./src/docs/assets/visualizer.ts",
-    "assets/QDD": "./src/docs/QDD.ts"
+    "assets/QDD": "./src/docs/QDD.ts",
   },
 
   output: {
@@ -27,7 +27,10 @@ module.exports = {
   plugins: [
     new webpack.ProgressPlugin(),
     new MiniCssExtractPlugin({ filename: "style.[contenthash].css" }),
-    new HtmlWebpackPlugin({ template: "./src/docs/index.html", filename:"tools/index.html" }),
+    new HtmlWebpackPlugin({
+      template: "./src/docs/index.html",
+      filename: "tools/index.html",
+    }),
   ],
 
   module: {
@@ -84,7 +87,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      svelte: path.dirname(require.resolve('svelte/package.json'))
+      svelte: path.dirname(require.resolve("svelte/package.json")),
       // svelte: path.resolve("node_modules", "svelte"),
     },
     mainFields: ["svelte", "browser", "module", "main"],
@@ -94,6 +97,6 @@ module.exports = {
   devServer: {
     open: true,
     host: "localhost",
-    contentBase: './docs/tools',
+    contentBase: "./docs/tools",
   },
 };

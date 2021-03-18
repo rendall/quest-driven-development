@@ -1,54 +1,33 @@
 {
   "title": "That thing",
-  "description": "PC must do something or nothing about that thing",
+  "description": "PC must do something or nothing about that thing.",
   "states": [
     {
       "id": "started",
       "summary": "PC learns about the thing and starts the quest",
-      "description": "Learning about the thing is arguably the hardest part",
+      "description": "Learning about the thing is arguably the hardest part.",
       "exits": [
-        [
-          "read about thing",
-          "read"
-        ],
-        [
-          "search for the thing",
-          "searched"
-        ]
+        ["read about thing", "read"],
+        ["search for the thing", "searched"]
       ]
     },
     {
       "id": "read",
       "summary": "PC reads about the thing",
-      "description": "There is a book all about the thing. The PC picks up that book and reads it",
+      "description": "There is a book all about the thing. The PC picks up that book and reads it.",
       "exits": [
-        [
-          "search for the thing",
-          "searched"
-        ],
-        [
-          "give up",
-          "gave-up"
-        ]
+        ["search for the thing", "searched"],
+        ["give up", "gave-up"]
       ]
     },
     {
       "id": "searched",
       "summary": "PC searches for the thing",
-      "description": "The search is hard, but the thing must be searched for",
+      "description": "The search is hard, but the thing must be searched for.",
       "exits": [
-        [
-          "continue search",
-          "searched"
-        ],
-        [
-          "find the thing",
-          "found"
-        ],
-        [
-          "give up",
-          "gave-up"
-        ]
+        ["continue search", "searched"],
+        ["find the thing", "found"],
+        ["give up", "gave-up"]
       ]
     },
     {
@@ -56,101 +35,60 @@
       "summary": "PC finds the thing",
       "description": "After a long search with many travails, PC finds the thing!",
       "exits": [
-        [
-          "lose the thing",
-          "lost"
-        ],
-        [
-          "sell the thing",
-          "sold"
-        ],
-        [
-          "keep the thing",
-          "kept"
-        ],
-        [
-          "give up",
-          "gave-up"
-        ]
+        ["lose the thing", "lost"],
+        ["sell the thing", "sold"],
+        ["keep the thing", "kept"],
+        ["give up", "gave-up"]
       ]
     },
     {
       "id": "lost",
       "summary": "PC loses the thing",
-      "description": "That thing which is found can be lost again",
+      "description": "That thing which is found can be lost again.",
       "exits": [
-        [
-          "search again",
-          "searched"
-        ],
-        [
-          "give up",
-          "gave-up"
-        ]
+        ["search again", "searched"],
+        ["give up", "gave-up"]
       ]
     },
     {
       "id": "sold",
       "summary": "PC sells the thing",
-      "description": "The thing is valuable, and is sold for a lot of money",
+      "description": "The thing is valuable, and is sold for a lot of money.",
       "exits": [
-        [
-          "buy the thing back",
-          "bought"
-        ],
-        [
-          "end",
-          "ended"
-        ]
+        ["buy the thing back", "bought"],
+        ["end", "ended"]
       ]
     },
     {
       "id": "kept",
       "summary": "PC keeps the thing",
-      "description": "PC decides that the thing is more valuable than mere money",
+      "description": "PC decides that the thing is more valuable than mere money.",
       "exits": [
-        [
-          "sell the thing after all",
-          "sold"
-        ],
-        [
-          "end",
-          "ended"
-        ]
+        ["sell the thing after all", "sold"],
+        ["end", "ended"],
+        ["lose the thing", "lost"]
       ]
     },
     {
       "id": "bought",
       "summary": "PC buys that thing",
-      "description": "Having sold it, the PC wants it back after all",
+      "description": "Having sold it, the PC wants it back after all.",
       "exits": [
-        [
-          "sell the thing yet again",
-          "sold"
-        ],
-        [
-          "lose the thing",
-          "lost"
-        ],
-        [
-          "keep the thing",
-          "kept"
-        ],
-        [
-          "end",
-          "ended"
-        ]
+        ["sell the thing yet again", "sold"],
+        ["lose the thing", "lost"],
+        ["keep the thing", "kept"],
+        ["end", "ended"]
       ]
     },
     {
       "id": "ended",
       "summary": "PC ends the quest successfully",
-      "description": "The thing has been found and dealt with"
+      "description": "The thing has been found and dealt with."
     },
     {
       "id": "gave-up",
       "summary": "PC gives up",
-      "description": "As valuable as the thing might be, it is just not worth it"
+      "description": "As valuable as the thing might be, it is just not worth it."
     }
   ]
 }

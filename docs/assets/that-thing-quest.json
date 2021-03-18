@@ -20,7 +20,7 @@
     {
       "id": "read",
       "summary": "PC reads about the thing",
-      "description": "There is a book all about the thing. The PC picks up that book and reads it.",
+      "description": "There is a book all about the thing. The PC picks up that book and reads it",
       "exits": [
         [
           "search for the thing",
@@ -77,7 +77,7 @@
     {
       "id": "lost",
       "summary": "PC loses the thing",
-      "description": "That which is found can be lost again",
+      "description": "That thing which is found can be lost again",
       "exits": [
         [
           "search again",

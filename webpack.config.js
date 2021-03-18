@@ -15,8 +15,6 @@ module.exports = {
   mode,
 
   entry: {
-    "assets/questBuilder": "./src/docs/assets/questBuilder.ts",
-    "assets/visualizer": "./src/docs/assets/visualizer.ts",
     "assets/QDD": "./src/docs/QDD.ts",
   },
 

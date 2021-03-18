@@ -5,6 +5,15 @@
 
 This is a placeholder for concepts and code related to Quest Driven Development.
 
+## Potential visualization libraries
+
+- <https://js.cytoscape.org/>
+- <https://github.com/visjs/vis-network>
+  - <https://visjs.github.io/vis-network/examples/network/data/dotLanguage/dotEdgeStyles.html>
+  - <https://visjs.github.io/vis-network/examples/network/nodeStyles/widthHeight.html>
+- <https://www.graphdracula.net/showcase/>
+
+
 ## Contributors
 
 This repo follows the [all contributors](https://github.com/all-contributors/all-contributors) specification.

@@ -1,32 +1,21 @@
 <script lang="ts">
+  import type { Exit, Quest, State, StateId } from "./assets/QDD";
+  import Visualizer from "./assets/Visualizer.svelte";
   import { saveAs } from "file-saver";
-  type StateId = string;
-  type Action = string;
-  type Exit = [Action, StateId];
-  type State = {
-    id: StateId;
-    summary: string;
-    description: string;
-    exits?: Exit[];
-  };
-  type Quest = {
-    title: string;
-    description: string;
-    states: State[];
-  };
-
   const startState: State = {
     id: "started",
     summary: "Inciting incident",
     description: "",
   };
 
-  let title;
-  let description;
-  let states: State[] = [startState];
+  let quest = {
+    title: "",
+    description: "",
+    states: [startState],
+  };
 
-  const collectData = () => ({ title, description, states });
-  
+  const collectData = () => quest;
+
   const toFileName = (str: string) =>
     str.replace(/[^\u0000-\u007F]+/, "").replace(/\s+/g, "");
 
@@ -35,15 +24,10 @@
     const file = new Blob([JSON.stringify(data)], {
       type: "application/json",
     });
-    saveAs(file, `${toFileName(title)}.json`);
+    saveAs(file, `${toFileName(quest.title)}.json`);
   };
 
-  const populateData = (data: string) => {
-    const dataObj:Quest = JSON.parse(data);
-    description = dataObj.description;
-    title = dataObj.title;
-    states = dataObj.states as State[];
-  };
+  const populateData = (data: string) => (quest = JSON.parse(data) as Quest);
 
   const onImportChange = (e: Event) => {
     const input = e.target as HTMLInputElement;
@@ -55,21 +39,27 @@
 
   const onAddStateClick = (e: Event) => {
     const newState: State = {
-      id: `state-${states.length}`,
+      id: `state-${quest.states.length}`,
       summary: "",
       description: "",
     };
 
-    states = [...states, newState];
+    quest = { ...quest, states:[...quest.states, newState] };
   };
 
   const onRemoveStateClick = (stateId: StateId) => (e: Event) =>
-    (states = states.filter((s) => s.id !== stateId));
+    (quest = {
+      ...quest,
+      states: quest.states.filter((s) => s.id !== stateId),
+    });
   const onAddStateExit = (state: State, i: Number) => () => {
     if (!state.exits) state = { ...state, exits: [] };
     const newExit: Exit = [`action-${state.exits.length}`, state.id];
     const newState = { ...state, exits: [...state.exits, newExit] };
-    states = states.map((s, idx) => (idx === i ? newState : s));
+    quest = {
+      ...quest,
+      states: quest.states.map((s, idx) => (idx === i ? newState : s)),
+    };
   };
 
   const onRemoveStateExit = (exit: Exit, state: State, i: Number) => () => {
@@ -77,7 +67,10 @@
       (e) => !(e[0] === exit[0] && e[1] === exit[1])
     );
     const newState = { ...state, exits: updatedExits };
-    states = states.map((s, idx) => (idx === i ? newState : s));
+    quest = {
+      ...quest,
+      states: quest.states.map((s, idx) => (idx === i ? newState : s)),
+    };
   };
 </script>
 
@@ -86,10 +79,10 @@
     Import:
     <input on:change={onImportChange} type="file" />
   </label>
-  <label>Title: <input bind:value={title} /></label>
-  <label>Description: <textarea bind:value={description} /></label>
+  <label>Title: <input bind:value={quest.title} /></label>
+  <label>Description: <textarea bind:value={quest.description} /></label>
   <ul>
-    {#each states as state, i}
+    {#each quest.states as state, i}
       <li class="state">
         <label>
           State: <input bind:value={state.id} />
@@ -129,6 +122,7 @@
   <label>
     Export: <button on:click={onExportClick}>Choose download location</button>
   </label>
+  <Visualizer {quest} />
 </main>
 
 <style>

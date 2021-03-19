@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Exit, Quest, State, StateId } from "./assets/QDD";
+  import type { Transition, Quest, State, StateId } from "./assets/QDD";
   import Visualizer from "./assets/Visualizer.svelte";
   import { saveAs } from "file-saver";
   const startState: State = {
@@ -20,14 +20,14 @@
     str.replace(/[^\u0000-\u007F]+/, "").replace(/\s+/g, "");
 
   const onExportClick = (e) => {
-    const data = collectData();
-    const file = new Blob([JSON.stringify(data)], {
+    const qData = collectData();
+    const file = new Blob([JSON.stringify(qData)], {
       type: "application/json",
     });
     saveAs(file, `${toFileName(quest.title)}.json`);
   };
 
-  const populateData = (data: string) => (quest = JSON.parse(data) as Quest);
+  const populateData = (qData: string) => (quest = JSON.parse(qData) as Quest);
 
   const onImportChange = (e: Event) => {
     const input = e.target as HTMLInputElement;
@@ -52,21 +52,21 @@
       ...quest,
       states: quest.states.filter((s) => s.id !== stateId),
     });
-  const onAddStateExit = (state: State, i: Number) => () => {
-    if (!state.exits) state = { ...state, exits: [] };
-    const newExit: Exit = [`action-${state.exits.length}`, state.id];
-    const newState = { ...state, exits: [...state.exits, newExit] };
+  const onAddStateTransition = (state: State, i: Number) => () => {
+    if (!state.transitions) state = { ...state, transitions: [] };
+    const newTransition: Transition = [`action-${state.transitions.length}`, state.id];
+    const newState = { ...state, transitions: [...state.transitions, newTransition] };
     quest = {
       ...quest,
       states: quest.states.map((s, idx) => (idx === i ? newState : s)),
     };
   };
 
-  const onRemoveStateExit = (exit: Exit, state: State, i: Number) => () => {
-    const updatedExits = state.exits.filter(
-      (e) => !(e[0] === exit[0] && e[1] === exit[1])
+  const onRemoveStateTransition = (transition: Transition, state: State, i: Number) => () => {
+    const updatedTransitions = state.transitions.filter(
+      (e) => !(e[0] === transition[0] && e[1] === transition[1])
     );
-    const newState = { ...state, exits: updatedExits };
+    const newState = { ...state, transitions: updatedTransitions };
     quest = {
       ...quest,
       states: quest.states.map((s, idx) => (idx === i ? newState : s)),
@@ -92,7 +92,7 @@
         </label>
         <label>Summary: <input bind:value={state.summary} /></label>
         <label>Description: <textarea bind:value={state.description} /></label>
-        {#if !!state.exits && state.exits.length > 0}
+        {#if !!state.transitions && state.transitions.length > 0}
           <table>
             <thead>
               <th>This action...</th>
@@ -100,12 +100,12 @@
               <th />
             </thead>
             <tbody>
-              {#each state.exits as exit}
+              {#each state.transitions as transition}
                 <tr>
-                  <td> <input bind:value={exit[0]} /></td>
-                  <td> <input bind:value={exit[1]} /></td>
+                  <td> <input bind:value={transition[0]} /></td>
+                  <td> <input bind:value={transition[1]} /></td>
                   <td>
-                    <button on:click={onRemoveStateExit(exit, state, i)}>
+                    <button on:click={onRemoveStateTransition(transition, state, i)}>
                       Remove
                     </button>
                   </td>
@@ -114,7 +114,7 @@
             </tbody>
           </table>
         {/if}
-        <button on:click={onAddStateExit(state, i)}>Add action</button>
+        <button on:click={onAddStateTransition(state, i)}>Add action</button>
       </li>
     {/each}
   </ul>

@@ -6,7 +6,7 @@
       "id": "started",
       "summary": "PC learns about the thing and starts the quest",
       "description": "Learning about the thing is arguably the hardest part.",
-      "exits": [
+      "transitions": [
         ["read about thing", "read"],
         ["search for the thing", "searched"]
       ]
@@ -15,7 +15,7 @@
       "id": "read",
       "summary": "PC reads about the thing",
       "description": "There is a book all about the thing. The PC picks up that book and reads it.",
-      "exits": [
+      "transitions": [
         ["search for the thing", "searched"],
         ["give up", "gave-up"]
       ]
@@ -24,7 +24,7 @@
       "id": "searched",
       "summary": "PC searches for the thing",
       "description": "The search is hard, but the thing must be searched for.",
-      "exits": [
+      "transitions": [
         ["continue search", "searched"],
         ["find the thing", "found"],
         ["give up", "gave-up"]
@@ -34,7 +34,7 @@
       "id": "found",
       "summary": "PC finds the thing",
       "description": "After a long search with many travails, PC finds the thing!",
-      "exits": [
+      "transitions": [
         ["lose the thing", "lost"],
         ["sell the thing", "sold"],
         ["keep the thing", "kept"],
@@ -45,7 +45,7 @@
       "id": "lost",
       "summary": "PC loses the thing",
       "description": "That thing which is found can be lost again.",
-      "exits": [
+      "transitions": [
         ["search again", "searched"],
         ["give up", "gave-up"]
       ]
@@ -54,7 +54,7 @@
       "id": "sold",
       "summary": "PC sells the thing",
       "description": "The thing is valuable, and is sold for a lot of money.",
-      "exits": [
+      "transitions": [
         ["buy the thing back", "bought"],
         ["end", "ended"]
       ]
@@ -63,7 +63,7 @@
       "id": "kept",
       "summary": "PC keeps the thing",
       "description": "PC decides that the thing is more valuable than mere money.",
-      "exits": [
+      "transitions": [
         ["sell the thing after all", "sold"],
         ["end", "ended"],
         ["lose the thing", "lost"]
@@ -73,7 +73,7 @@
       "id": "bought",
       "summary": "PC buys that thing",
       "description": "Having sold it, the PC wants it back after all.",
-      "exits": [
+      "transitions": [
         ["sell the thing yet again", "sold"],
         ["lose the thing", "lost"],
         ["keep the thing", "kept"],

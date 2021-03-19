@@ -1,15 +1,14 @@
 export type StateId = string;
-export type Action = string;
-export type Exit = [Action, StateId];
+export type Event = string;
+export type Transition = [Event, StateId];
 export type State = {
   id: StateId;
   summary: string;
   description: string;
-  exits?: Exit[];
+  transitions?: Transition[];
 };
 export type Quest = {
   title: string;
   description: string;
   states: State[];
 };
-

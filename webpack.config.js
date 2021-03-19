@@ -6,7 +6,7 @@ const preprocess = sveltePreprocess({ typescript: true });
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-// const mode = process.env.NODE_ENV || "development"
+// mode can be "development" or "production"
 const mode = process.env.NODE_ENV || "development";
 const isDevelopmentMode = mode === "development";
 const isProductionMode = mode === "production";
@@ -86,7 +86,6 @@ module.exports = {
   resolve: {
     alias: {
       svelte: path.dirname(require.resolve("svelte/package.json")),
-      // svelte: path.resolve("node_modules", "svelte"),
     },
     mainFields: ["svelte", "browser", "module", "main"],
     extensions: [".mjs", ".js", ".svelte", ".ts"],

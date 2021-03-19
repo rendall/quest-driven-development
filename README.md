@@ -9,11 +9,10 @@ This is a placeholder for concepts and code related to Quest Driven Development.
 ## Potential visualization libraries
 
 - <https://js.cytoscape.org/>
-- <https://github.com/visjs/vis-network>
+- <https://github.com/visjs/vis-network> (defunct and/or in too much flux <https://github.com/almende/vis/issues/4259>)
   - <https://visjs.github.io/vis-network/examples/network/data/dotLanguage/dotEdgeStyles.html>
   - <https://visjs.github.io/vis-network/examples/network/nodeStyles/widthHeight.html>
 - <https://www.graphdracula.net/showcase/>
-
 
 ## Contributors
 

@@ -1,2 +1,3 @@
-RAW/
-node_modules/
+/RAW/
+/docs/
+/node_modules/

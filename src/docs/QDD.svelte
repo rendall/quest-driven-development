@@ -44,7 +44,7 @@
       description: "",
     };
 
-    quest = { ...quest, states:[...quest.states, newState] };
+    quest = { ...quest, states: [...quest.states, newState] };
   };
 
   const onRemoveStateClick = (stateId: StateId) => (e: Event) =>
@@ -54,15 +54,25 @@
     });
   const onAddStateTransition = (state: State, i: Number) => () => {
     if (!state.transitions) state = { ...state, transitions: [] };
-    const newTransition: Transition = [`action-${state.transitions.length}`, state.id];
-    const newState = { ...state, transitions: [...state.transitions, newTransition] };
+    const newTransition: Transition = [
+      `action-${state.transitions.length}`,
+      state.id,
+    ];
+    const newState = {
+      ...state,
+      transitions: [...state.transitions, newTransition],
+    };
     quest = {
       ...quest,
       states: quest.states.map((s, idx) => (idx === i ? newState : s)),
     };
   };
 
-  const onRemoveStateTransition = (transition: Transition, state: State, i: Number) => () => {
+  const onRemoveStateTransition = (
+    transition: Transition,
+    state: State,
+    i: Number
+  ) => () => {
     const updatedTransitions = state.transitions.filter(
       (e) => !(e[0] === transition[0] && e[1] === transition[1])
     );
@@ -74,56 +84,61 @@
   };
 </script>
 
-<main>
-  <label>
-    Import:
-    <input on:change={onImportChange} type="file" />
-  </label>
-  <label>Title: <input bind:value={quest.title} /></label>
-  <label>Description: <textarea bind:value={quest.description} /></label>
-  <ul>
-    {#each quest.states as state, i}
-      <li class="state">
-        <label>
-          State: <input bind:value={state.id} />
-          <button on:click={onRemoveStateClick(state.id)}>
-            Remove {state.id}
-          </button>
-        </label>
-        <label>Summary: <input bind:value={state.summary} /></label>
-        <label>Description: <textarea bind:value={state.description} /></label>
-        {#if !!state.transitions && state.transitions.length > 0}
-          <table>
-            <thead>
-              <th>This action...</th>
-              <th>...transitions to state</th>
-              <th />
-            </thead>
-            <tbody>
-              {#each state.transitions as transition}
-                <tr>
-                  <td> <input bind:value={transition[0]} /></td>
-                  <td> <input bind:value={transition[1]} /></td>
-                  <td>
-                    <button on:click={onRemoveStateTransition(transition, state, i)}>
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        {/if}
-        <button on:click={onAddStateTransition(state, i)}>Add action</button>
-      </li>
-    {/each}
-  </ul>
-  <button on:click={onAddStateClick}>Add State</button>
-  <label>
-    Export: <button on:click={onExportClick}>Choose download location</button>
-  </label>
+<div class="container">
+  <main>
+    <label>
+      Import:
+      <input on:change={onImportChange} type="file" />
+    </label>
+    <label>Title: <input bind:value={quest.title} /></label>
+    <label>Description: <textarea bind:value={quest.description} /></label>
+    <ul>
+      {#each quest.states as state, i}
+        <li class="state">
+          <label>
+            State: <input bind:value={state.id} />
+            <button on:click={onRemoveStateClick(state.id)}>
+              Remove {state.id}
+            </button>
+          </label>
+          <label>Summary: <input bind:value={state.summary} /></label>
+          <label>Description: <textarea bind:value={state.description} /></label
+          >
+          {#if !!state.transitions && state.transitions.length > 0}
+            <table>
+              <thead>
+                <th>This action...</th>
+                <th>...transitions to state</th>
+                <th />
+              </thead>
+              <tbody>
+                {#each state.transitions as transition}
+                  <tr>
+                    <td> <input bind:value={transition[0]} /></td>
+                    <td> <input bind:value={transition[1]} /></td>
+                    <td>
+                      <button
+                        on:click={onRemoveStateTransition(transition, state, i)}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          {/if}
+          <button on:click={onAddStateTransition(state, i)}>Add action</button>
+        </li>
+      {/each}
+    </ul>
+    <button on:click={onAddStateClick}>Add State</button>
+    <label>
+      Export: <button on:click={onExportClick}>Choose download location</button>
+    </label>
+  </main>
   <Visualizer {quest} />
-</main>
+</div>
 
 <style>
   .state {
@@ -137,6 +152,9 @@
   .state > button:last-child {
     width: 5rem;
     align-self: flex-end;
+  }
+  div.container {
+    display: flex;
   }
   button {
     white-space: nowrap;

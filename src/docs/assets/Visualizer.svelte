@@ -13,7 +13,7 @@
         (els, state) => [
           ...els,
           { data: { id: state.id } },
-          ...state.transitions.map((tr: Transition, i:number) => ({
+          ...state.transitions.map((tr: Transition, i: number) => ({
             data: { source: state.id, target: tr[1], id: `${state.id}-${i}` },
           })),
         ],
@@ -57,12 +57,20 @@
   });
 </script>
 
-<div>{quest.title}</div>
-<div id="viz" />
+<aside>
+  <div>{quest.title}</div>
+  <div id="viz" />
+</aside>
 
 <style>
+  aside {
+    flex-grow: 1;
+  }
+
   #viz {
-    height: 1200px;
-    width: 1200px;
+    background-color: whitesmoke;
+    width: 100%;
+    height: 99%;
+    min-height: 100vh;
   }
 </style>

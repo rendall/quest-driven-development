@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "include": ["./src/docs/"],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "lib": ["DOM", "ES6"],
+    "types": ["node", "svelte"]
+  }
+}

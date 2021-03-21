@@ -1,4 +1,5 @@
 # Quest Driven Development
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -8,15 +9,16 @@ This is a placeholder for concepts and code related to Quest Driven Development.
 ## Potential visualization libraries
 
 - <https://js.cytoscape.org/>
-- <https://github.com/visjs/vis-network>
+- <https://github.com/visjs/vis-network> (defunct and/or in too much flux <https://github.com/almende/vis/issues/4259>)
   - <https://visjs.github.io/vis-network/examples/network/data/dotLanguage/dotEdgeStyles.html>
   - <https://visjs.github.io/vis-network/examples/network/nodeStyles/widthHeight.html>
-- <https://www.graphdracula.net/showcase/>
-
+- <https://d3js.org> (not growth-hacking)
+- <https://www.graphdracula.net/showcase/> (works but not enough features, difficult to tell direction of edges, no TS typing)
 
 ## Contributors
 
 This repo follows the [all contributors](https://github.com/all-contributors/all-contributors) specification.
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->

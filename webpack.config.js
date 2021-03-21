@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 // mode can be "development" or "production"
-const mode = process.env.NODE_ENV || "development";
+const mode = process.env.NODE_ENV || "production";
 const isDevelopmentMode = mode === "development";
 const isProductionMode = mode === "production";
 
@@ -36,7 +36,8 @@ module.exports = {
       {
         test: /\.svelte$/,
         use: {
-          loader: "svelte-loader-hot",
+          // loader: "svelte-loader-hot",
+          loader: isProductionMode ? "svelte-loader" : "svelte-loader-hot",
           options: {
             dev: isDevelopmentMode,
             preprocess,

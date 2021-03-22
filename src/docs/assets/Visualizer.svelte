@@ -11,11 +11,16 @@
 
     const elements = quest.states
       .map((s) => (!!s.transitions ? s : { ...s, transitions: [] }))
+      // map states and their transitions to cytoscape format
       .reduce(
         (els, state) => [
           ...els,
           { data: { id: state.id } },
-          ...state.transitions.map((tr: Transition, i: number) => ({
+          ...state.transitions
+            // filter out transitions that contain non-existent targets
+            .filter(tr => quest.states.find( s => s.id === tr[1]))
+            // map transitions to cytoscape format
+            .map((tr: Transition, i: number) => ({
             data: {
               source: state.id,
               target: tr[1],

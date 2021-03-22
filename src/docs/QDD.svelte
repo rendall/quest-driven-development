@@ -58,13 +58,13 @@
       `action-${state.transitions.length}`,
       state.id,
     ];
-    const newState = {
+    const owningState = {
       ...state,
       transitions: [...state.transitions, newTransition],
     };
     quest = {
       ...quest,
-      states: quest.states.map((s, idx) => (idx === i ? newState : s)),
+      states: quest.states.map((s, idx) => (idx === i ? owningState : s)),
     };
   };
 

@@ -6,14 +6,55 @@
 
 This is a placeholder for concepts and code related to Quest Driven Development.
 
-## Potential visualization libraries
+## Builder and Visualizer
+
+A minimal narrative builder and visualizer is here: <https://rendall.github.io/quest-driven-development/tools/index.html>
+
+### Instructions
+
+Visit the [builder](https://rendall.github.io/quest-driven-development/tools/index.html) with a browser.
+
+The builder is on the left, and the visualizer is on the right.
+
+The builder has an "Import:" _Choose File_ button at the top, a _Title_ field, a _Description_ field, a _State_ card, an _Add State_ button and finally a "Export:" _Choose download location_ button at the bottom.
+
+The visualizer shows a directed graph, visualizing the contents of the builder. Because the builder is empty except for a single 'started' state, the visualizer shows one node labeled 'started'
+
+Fill in the empty _Title_ field with a catchy name for your narrative.
+
+Fill in the empty _Description_ field, perhaps a detailed overview of the narrative plot, outlining an overall theme and all major decision points of the narrative and all major endings. Even if your narrative takes place in a visual medium like a platformer or a first person adventure, record in words your intent for this narrative.
+
+Below the _Description_ field is a _State_ card.
+
+A _State_ is the answer to the questions "What are the consequences of the previous decision?" and "What decisions are available now?". These questions are only ever asked in response to a single previous decision by the player. Even deep into the narrative, after many decisions by the player, the current _State_ will always have an answer to the question "What is happening _now_ (as a result of the _single decision_ that brought the player from the last _State_ to this one)?" and "What choices does the player have now?"
+
+The _State field_ inside the _State card_ is a _unique_ identifier, and should be a word or _short_ phrase that describes the _State_. While being _descriptive_ is important, it's essential that it be _unique_. This identifier is how you and the builder will distinguish one state from another. As a suggestion, consider naming the state after the action that caused the transition to this state, and use the past tense (e.g. the PC decides to _steal the crown_, so the subsequent state might be named _stole-crown_; after deciding to _jump ship_, the subsequent state is _jumped-ship_)
+
+The builder by default shows a _started_ state. For now, keep this identifier, but you can change it any time.
+
+The _Summary_ field is intended to be a focused statement of what occurs at this _State_. 
+
+The _Description_ is to be a more in-depth paragraph or two which includes everything relevant to the current state and also to the decisions that will cause the current state to exit (or _transition_).
+
+Inside the _State_ card, press the button labeled _Add action_.
+
+There are two fields. The left _describes_ the action and the right field is for the name of the state that this action transitions to. The left field might be _steal the crown_ and the target state might then be _stole-crown_; or _pull the lever_ and _pulled-lever_
+
+Add an action description on the left and a state identifier on the right. If the state identifier is to an existing node, then an arrow points from the current state's node to the following state's node.
+
+Note that the _action_ field is for a _description_ of the action, and not necessarily a game command. For instance, if the player needs to collect plate, a cup and a box of matches in order for the narrative to proceed to the next step, the action could be _collect plate, cup and box of matches_ or _get everything ready_ or _gather materials_. It's not necessary or desirable to capture that with a parallel chain of 3 states _collected-cup_, _collected-matches_, _collected-plate_ and so forth.
+
+In general, every state should be about a decision that the player must make. If there is only one action-transition from that state, it's likely that the state could be combined with its subsequent.
+
+Also include actions that could happen without player choice or intervention, as long as it's specific to that state. If there is a trap that has a 50% chance of triggering while that state is current, then include this action as well even though it's not strictly a player decision (e.g. _trigger trap_)
+
+In the QDD approach, a _State_ will list every action _that will move the narrative to another state_, but it must _not contain every possible action the player can take_. It might occasionally be important _narratively_ for an action to loop back to the same _State_ (for example, to demonstrate futility), but the focus is on the narrative and not on modeling a response to every possible action. Definitely do not (yet) model actions that have only generic responses (e.g. _"That does nothing."_) or actions that cannot be done (e.g. "_You do not have the axe!"_)
+
+... More to come
+
+### Visualization library
 
 - <https://js.cytoscape.org/>
-- <https://github.com/visjs/vis-network> (defunct and/or in too much flux <https://github.com/almende/vis/issues/4259>)
-  - <https://visjs.github.io/vis-network/examples/network/data/dotLanguage/dotEdgeStyles.html>
-  - <https://visjs.github.io/vis-network/examples/network/nodeStyles/widthHeight.html>
-- <https://d3js.org> (not growth-hacking)
-- <https://www.graphdracula.net/showcase/> (works but not enough features, difficult to tell direction of edges, no TS typing)
 
 ## Contributors
 

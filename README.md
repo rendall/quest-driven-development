@@ -12,13 +12,23 @@ A minimal narrative builder and visualizer is here: <https://rendall.github.io/q
 
 ### Instructions
 
-Visit the [builder](https://rendall.github.io/quest-driven-development/tools/index.html) with a browser.
+The narrative builder is on the left, and the visualizer is on the right. Build a narrative by inputting information about it into the builder.
 
-The builder is on the left, and the visualizer is on the right.
-
-The builder has an "Import:" _Choose File_ button at the top, a _Title_ field, a _Description_ field, a _State_ card, an _Add State_ button and finally a "Export:" _Choose download location_ button at the bottom.
+The builder has an "Import:" _Choose File_ button at the top, and an "Export:" _Choose download location_ button at the bottom. Use these buttons to save and load previous narratives.
 
 The visualizer shows a directed graph, visualizing the contents of the builder. Because the builder is empty except for a single 'started' state, the visualizer shows one node labeled 'started'
+
+#### Caveats and TODOs
+
+- The layout of the visualizer is reset with every change to the builder.
+  - The automatic layout should be better
+  - User layouts should be retained
+- The state names must be typed in completely.
+  - The Action target fields should be drop-downs or auto-complete
+- Refreshing the browser resets the narrative
+  - Save the narrative in a cookie
+
+#### New Narrative
 
 Fill in the empty _Title_ field with a catchy name for your narrative.
 
@@ -49,8 +59,6 @@ In general, every state should be about a decision that the player must make. If
 Also include actions that could happen without player choice or intervention, as long as it's specific to that state. If there is a trap that has a 50% chance of triggering while that state is current, then include this action as well even though it's not strictly a player decision (e.g. _trigger trap_)
 
 In the QDD approach, a _State_ will list every action _that will move the narrative to another state_, but it must _not contain every possible action the player can take_. It might occasionally be important _narratively_ for an action to loop back to the same _State_ (for example, to demonstrate futility), but the focus is on the narrative and not on modeling a response to every possible action. Definitely do not (yet) model actions that have only generic responses (e.g. _"That does nothing."_) or actions that cannot be done (e.g. "_You do not have the axe!"_)
-
-... More to come
 
 ### Visualization library
 

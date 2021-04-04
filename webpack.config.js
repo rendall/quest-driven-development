@@ -24,7 +24,7 @@ module.exports = {
 
   plugins: [
     new webpack.ProgressPlugin(),
-    new MiniCssExtractPlugin({ filename: isProductionMode ? "style.css" : "style.[contenthash].css" }),
+    new MiniCssExtractPlugin({ filename: "style.[contenthash].css" }),
     new HtmlWebpackPlugin({
       template: "./src/docs/index.html",
       filename: "tools/index.html",

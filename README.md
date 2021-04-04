@@ -1,7 +1,9 @@
 # Quest Driven Development
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This is a placeholder for concepts and code related to Quest Driven Development.
@@ -42,7 +44,7 @@ The _State field_ inside the _State card_ is a _unique_ identifier, and should b
 
 The builder by default shows a _started_ state. For now, keep this identifier, but you can change it any time.
 
-The _Summary_ field is intended to be a focused statement of what occurs at this _State_. 
+The _Summary_ field is intended to be a focused statement of what occurs at this _State_.
 
 The _Description_ is to be a more in-depth paragraph or two which includes everything relevant to the current state and also to the decisions that will cause the current state to exit (or _transition_).
 
@@ -63,6 +65,8 @@ In the QDD approach, a _State_ will list every action _that will move the narrat
 ### Visualization library
 
 - <https://js.cytoscape.org/>
+
+Cytoscape contributes massively to the application filesize. For the sake of growth-hacking, this will be ignored for now, as long as actual in-browser responsiveness and performance is not affected.
 
 ## Contributors
 

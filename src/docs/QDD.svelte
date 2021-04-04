@@ -2,8 +2,11 @@
   import type { Transition, Quest, State, StateId } from "./assets/QDD";
   import Visualizer from "./assets/Visualizer.svelte";
   import { saveAs } from "file-saver";
+  import { v4 as uuid } from "uuid";
+
   const startState: State = {
-    id: "started",
+    id: uuid(),
+    name: "started",
     summary: "Inciting incident",
     description: "",
   };
@@ -39,7 +42,8 @@
 
   const onAddStateClick = (e: Event) => {
     const newState: State = {
-      id: `state-${quest.states.length}`,
+      id: uuid(),
+      name: `state-${quest.states.length}`,
       summary: "",
       description: "",
     };
@@ -52,11 +56,12 @@
       ...quest,
       states: quest.states.filter((s) => s.id !== stateId),
     });
+
   const onAddStateTransition = (state: State, i: Number) => () => {
     if (!state.transitions) state = { ...state, transitions: [] };
     const newTransition: Transition = [
       `action-${state.transitions.length}`,
-      state.id,
+      state.name,
     ];
     const owningState = {
       ...state,
@@ -96,14 +101,19 @@
       {#each quest.states as state, i}
         <li class="state">
           <label>
-            State: <input bind:value={state.id} />
+            State: <input bind:value={state.name} />
             <button on:click={onRemoveStateClick(state.id)}>
-              Remove {state.id}
+              Remove {state.name}
             </button>
           </label>
-          <label>Summary: <input bind:value={state.summary} /></label>
-          <label>Description: <textarea bind:value={state.description} /></label
-          >
+          <label>
+            Summary:
+            <input bind:value={state.summary} />
+          </label>
+          <label>
+            Description:
+            <textarea bind:value={state.description} />
+          </label>
           {#if !!state.transitions && state.transitions.length > 0}
             <table>
               <thead>

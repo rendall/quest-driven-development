@@ -8,14 +8,8 @@
       "summary": "PC learns about the thing and starts the quest",
       "description": "Learning about the thing is arguably the hardest part.",
       "transitions": [
-        [
-          "read about thing",
-          "read"
-        ],
-        [
-          "search for the thing",
-          "searched"
-        ]
+        ["read about thing", "read"],
+        ["search for the thing", "searched"]
       ]
     },
     {
@@ -24,14 +18,8 @@
       "summary": "PC reads about the thing",
       "description": "There is a book all about the thing. The PC picks up that book and reads it.",
       "transitions": [
-        [
-          "search for the thing",
-          "searched"
-        ],
-        [
-          "give up",
-          "gave-up"
-        ]
+        ["search for the thing", "searched"],
+        ["give up", "gave-up"]
       ]
     },
     {
@@ -40,18 +28,9 @@
       "summary": "PC searches for the thing",
       "description": "The search is hard, but the thing must be searched for.",
       "transitions": [
-        [
-          "continue search",
-          "searched"
-        ],
-        [
-          "find the thing",
-          "found"
-        ],
-        [
-          "give up",
-          "gave-up"
-        ]
+        ["continue search", "searched"],
+        ["find the thing", "found"],
+        ["give up", "gave-up"]
       ]
     },
     {
@@ -60,22 +39,10 @@
       "summary": "PC finds the thing",
       "description": "After a long search with many travails, PC finds the thing!",
       "transitions": [
-        [
-          "lose the thing",
-          "lost"
-        ],
-        [
-          "sell the thing",
-          "sold"
-        ],
-        [
-          "keep the thing",
-          "kept"
-        ],
-        [
-          "give up",
-          "gave-up"
-        ]
+        ["lose the thing", "lost"],
+        ["sell the thing", "sold"],
+        ["keep the thing", "kept"],
+        ["give up", "gave-up"]
       ]
     },
     {
@@ -84,14 +51,8 @@
       "summary": "PC loses the thing",
       "description": "That thing which is found can be lost again.",
       "transitions": [
-        [
-          "search again",
-          "searched"
-        ],
-        [
-          "give up",
-          "gave-up"
-        ]
+        ["search again", "searched"],
+        ["give up", "gave-up"]
       ]
     },
     {
@@ -100,14 +61,8 @@
       "summary": "PC sells the thing",
       "description": "The thing is valuable, and is sold for a lot of money.",
       "transitions": [
-        [
-          "buy the thing back",
-          "bought"
-        ],
-        [
-          "end",
-          "ended"
-        ]
+        ["buy the thing back", "bought"],
+        ["end", "ended"]
       ]
     },
     {
@@ -116,18 +71,9 @@
       "summary": "PC keeps the thing",
       "description": "PC decides that the thing is more valuable than mere money.",
       "transitions": [
-        [
-          "sell the thing after all",
-          "sold"
-        ],
-        [
-          "end",
-          "ended"
-        ],
-        [
-          "lose the thing",
-          "lost"
-        ]
+        ["sell the thing after all", "sold"],
+        ["end", "ended"],
+        ["lose the thing", "lost"]
       ]
     },
     {
@@ -136,22 +82,10 @@
       "summary": "PC buys that thing",
       "description": "Having sold it, the PC wants it back after all.",
       "transitions": [
-        [
-          "sell the thing yet again",
-          "sold"
-        ],
-        [
-          "lose the thing",
-          "lost"
-        ],
-        [
-          "keep the thing",
-          "kept"
-        ],
-        [
-          "end",
-          "ended"
-        ]
+        ["sell the thing yet again", "sold"],
+        ["lose the thing", "lost"],
+        ["keep the thing", "kept"],
+        ["end", "ended"]
       ]
     },
     {

@@ -5,13 +5,13 @@
   import { v4 as uuid } from "uuid";
 
   const startState: State = {
-    id: uuid(),
+    id: uuid() as string,
     name: "started",
     summary: "Inciting incident",
     description: "",
   };
 
-  let quest = {
+  let quest: Quest = {
     title: "",
     description: "",
     states: [startState],
@@ -42,7 +42,7 @@
 
   const onAddStateClick = (e: Event) => {
     const newState: State = {
-      id: uuid(),
+      id: uuid() as string,
       name: `state-${quest.states.length}`,
       summary: "",
       description: "",

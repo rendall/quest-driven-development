@@ -1,7 +1,7 @@
 <script lang="ts">
   import cytoscape from "cytoscape";
 
-  import { afterUpdate, tick } from "svelte";
+  import { afterUpdate } from "svelte";
   import type { Quest, State, StateId, Transition } from "./QDD";
   export let quest: Quest;
 
@@ -111,101 +111,103 @@
     if (visState.pan) cy.pan(visState.pan);
     if (visState.zoom) cy.zoom(visState.zoom);
 
-    const nodes: {
-      id: StateId;
-      position: { x: number; y: number };
-    }[] = cy.nodes().map((n) => ({ id: n.data("id"), position: n.position() }));
+    const isPositioned = (node: cytoscape.NodeSingular) =>
+      node.position() && !(node.position().x === 0 && node.position().y === 0);
 
-    // const layoutOptions = {
-    //   name: "cose",
-    //   // Called on `layoutready`
-    //   ready: function () {},
+    const unPositionedNodes = cy
+      .nodes()
+      .difference(cy.nodes().filter(isPositioned));
 
-    //   // Called on `layoutstop`
-    //   stop: function () {},
+    const layoutOptions = {
+      name: "cose",
+      // Called on `layoutready`
+      ready: function () {},
 
-    //   // Whether to animate while running the layout
-    //   // true : Animate continuously as the layout is running
-    //   // false : Just show the end result
-    //   // 'end' : Animate with the end result, from the initial positions to the end positions
-    //   animate: false,
+      // Called on `layoutstop`
+      stop: function () {},
 
-    //   // Easing of the animation for animate:'end'
-    //   animationEasing: undefined,
+      // Whether to animate while running the layout
+      // true : Animate continuously as the layout is running
+      // false : Just show the end result
+      // 'end' : Animate with the end result, from the initial positions to the end positions
+      animate: false,
 
-    //   // The duration of the animation for animate:'end'
-    //   animationDuration: undefined,
+      // Easing of the animation for animate:'end'
+      animationEasing: undefined,
 
-    //   // A function that determines whether the node should be animated
-    //   // All nodes animated by default on animate enabled
-    //   // Non-animated nodes are positioned immediately when the layout starts
-    //   animateFilter: function (node, i) {
-    //     return true;
-    //   },
+      // The duration of the animation for animate:'end'
+      animationDuration: undefined,
 
-    //   // The layout animates only after this many milliseconds for animate:true
-    //   // (prevents flashing on fast runs)
-    //   animationThreshold: 250,
+      // A function that determines whether the node should be animated
+      // All nodes animated by default on animate enabled
+      // Non-animated nodes are positioned immediately when the layout starts
+      animateFilter: function (node, i) {
+        return true;
+      },
 
-    //   // Number of iterations between consecutive screen positions update
-    //   refresh: 20,
+      // The layout animates only after this many milliseconds for animate:true
+      // (prevents flashing on fast runs)
+      animationThreshold: 250,
 
-    //   // Whether to fit the network view after when done
-    //   fit: true,
+      // Number of iterations between consecutive screen positions update
+      refresh: 20,
 
-    //   // Padding on fit
-    //   padding: 30,
+      // Whether to fit the network view after when done
+      fit: true,
 
-    //   // Constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
-    //   boundingBox: undefined,
+      // Padding on fit
+      padding: 30,
 
-    //   // Excludes the label when calculating node bounding boxes for the layout algorithm
-    //   nodeDimensionsIncludeLabels: true,
+      // Constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
+      boundingBox: undefined,
 
-    //   // Randomize the initial positions of the nodes (true) or use existing positions (false)
-    //   randomize: false,
+      // Excludes the label when calculating node bounding boxes for the layout algorithm
+      nodeDimensionsIncludeLabels: true,
 
-    //   // Extra spacing between components in non-compound graphs
-    //   componentSpacing: 512,
+      // Randomize the initial positions of the nodes (true) or use existing positions (false)
+      randomize: false,
 
-    //   // Node repulsion (non overlapping) multiplier
-    //   nodeRepulsion: function (node) {
-    //     return 32;
-    //   },
+      // Extra spacing between components in non-compound graphs
+      componentSpacing: 512,
 
-    //   // Node repulsion (overlapping) multiplier
-    //   nodeOverlap: 4,
+      // Node repulsion (non overlapping) multiplier
+      nodeRepulsion: function (node) {
+        return 32;
+      },
 
-    //   // Ideal edge (non nested) length
-    //   idealEdgeLength: function (edge) {
-    //     return 1;
-    //   },
+      // Node repulsion (overlapping) multiplier
+      nodeOverlap: 4,
 
-    //   // Divisor to compute edge forces
-    //   edgeElasticity: function (edge) {
-    //     return 2048;
-    //   },
+      // Ideal edge (non nested) length
+      idealEdgeLength: function (edge) {
+        return 1;
+      },
 
-    //   // Nesting factor (multiplier) to compute ideal edge length for nested edges
-    //   nestingFactor: 1.2,
+      // Divisor to compute edge forces
+      edgeElasticity: function (edge) {
+        return 2048;
+      },
 
-    //   // Gravity force (constant)
-    //   gravity: 1,
+      // Nesting factor (multiplier) to compute ideal edge length for nested edges
+      nestingFactor: 1.2,
 
-    //   // Maximum number of iterations to perform
-    //   numIter: 1000,
+      // Gravity force (constant)
+      gravity: 1,
 
-    //   // Initial temperature (maximum node displacement)
-    //   initialTemp: 1000,
+      // Maximum number of iterations to perform
+      numIter: 1000,
 
-    //   // Cooling factor (how the temperature is reduced between consecutive iterations
-    //   coolingFactor: 0.99,
+      // Initial temperature (maximum node displacement)
+      initialTemp: 1000,
 
-    //   // Lower temperature threshold (below this point the layout will end)
-    //   minTemp: 1.0,
-    // };
+      // Cooling factor (how the temperature is reduced between consecutive iterations
+      coolingFactor: 0.99,
 
-    // cy.layout(layoutOptions).run();
+      // Lower temperature threshold (below this point the layout will end)
+      minTemp: 1.0,
+    };
+
+    unPositionedNodes.layout(layoutOptions).run();
 
     //@ts-expect-error
     cy.removeAllListeners();

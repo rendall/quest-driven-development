@@ -83,6 +83,7 @@
       ...quest,
       states: quest.states.filter((s) => s.id !== stateId),
     };
+    //TODO: There should be an option to remove transitions referencing this removed state, or flagging them somehow
     storeQuest();
   };
 

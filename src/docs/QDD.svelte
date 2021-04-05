@@ -3,6 +3,7 @@
   import Visualizer from "./assets/Visualizer.svelte";
   import { saveAs } from "file-saver";
   import { v4 as uuid } from "uuid";
+  import { beforeUpdate } from "svelte";
 
   const startState: State = {
     id: uuid() as string,
@@ -31,12 +32,35 @@
   };
 
   const populateData = (qData: string) => (quest = JSON.parse(qData) as Quest);
+  const storeQuest = () => {
+    const questCookie = `quest=${JSON.stringify(quest)}`;
+    const questlessCookies = document.cookie
+      .split(";")
+      .filter((s) => !s.trim().startsWith("quest="))
+      .join(";");
+    document.cookie = `${questCookie};${questlessCookies}`;
+  };
+  const recoverQuest = () => {
+    const questStr = document.cookie
+      .split(";")
+      .map((s) => s.trim())
+      .filter((s) => s.startsWith("quest="))
+      .map((kv) => kv.split("="))
+      .map(([k, v]) => v);
+
+    const hasCookie = questStr && Array.isArray(questStr);
+    if (hasCookie) quest = JSON.parse(questStr[0]);
+    console.log({ hasCookie, quest });
+  };
 
   const onImportChange = (e: Event) => {
     const input = e.target as HTMLInputElement;
     const file = input.files[0];
     const reader = new FileReader();
-    reader.onload = (e) => populateData(e.target.result as string);
+    reader.onload = (e) => {
+      populateData(e.target.result as string);
+      storeQuest();
+    };
     reader.readAsText(file);
   };
 
@@ -49,13 +73,16 @@
     };
 
     quest = { ...quest, states: [...quest.states, newState] };
+    storeQuest();
   };
 
-  const onRemoveStateClick = (stateId: StateId) => (e: Event) =>
-    (quest = {
+  const onRemoveStateClick = (stateId: StateId) => (e: Event) => {
+    quest = {
       ...quest,
       states: quest.states.filter((s) => s.id !== stateId),
-    });
+    };
+    storeQuest();
+  };
 
   const onAddStateTransition = (state: State, i: Number) => () => {
     if (!state.transitions) state = { ...state, transitions: [] };
@@ -71,6 +98,7 @@
       ...quest,
       states: quest.states.map((s, idx) => (idx === i ? owningState : s)),
     };
+    storeQuest();
   };
 
   const onRemoveStateTransition = (
@@ -86,7 +114,13 @@
       ...quest,
       states: quest.states.map((s, idx) => (idx === i ? newState : s)),
     };
+    storeQuest();
   };
+
+  beforeUpdate(() => {
+    console.log("beforeUpdate");
+    recoverQuest();
+  });
 </script>
 
 <div class="container">

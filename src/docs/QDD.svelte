@@ -18,6 +18,8 @@
     states: [startState],
   };
 
+  let recoverOnce = false;
+
   const collectData = () => quest;
 
   const toFileName = (str: string) =>
@@ -118,8 +120,10 @@
   };
 
   beforeUpdate(() => {
-    console.log("beforeUpdate");
-    recoverQuest();
+    if (!recoverOnce) {
+      recoverQuest();
+      recoverOnce = true;
+    }
   });
 </script>
 

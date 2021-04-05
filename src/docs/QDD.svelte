@@ -124,6 +124,8 @@
       recoverQuest();
       recoverOnce = true;
     }
+    //TODO: Oh... this does not seem performant
+    else storeQuest();
   });
 </script>
 

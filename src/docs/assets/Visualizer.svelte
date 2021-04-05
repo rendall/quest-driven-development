@@ -2,11 +2,32 @@
   import cytoscape from "cytoscape";
 
   import { afterUpdate, tick } from "svelte";
-  import type { Quest, State, Transition } from "./QDD";
+  import type { Quest, State, StateId, Transition } from "./QDD";
   export let quest: Quest;
+
+  type VisState = {
+    nodes: { id: string; position: { x: number; y: number } }[];
+    pan: cytoscape.Position;
+    zoom: number;
+  };
 
   afterUpdate(async () => {
     if (!quest.states) return;
+
+    const visState: VisState = recoverVis();
+
+    /** Helper function for getPos(id) => position */
+    const getPosFunc = (visState: {
+      nodes: { id: string; position: { x: number; y: number } }[];
+    }) => (id: string) => {
+      if (!visState || !visState.nodes) return undefined;
+      const node = visState.nodes.find((n) => n.id === id);
+      return node ? node.position : undefined;
+    };
+    /** Return a position or undefined given a state id*/
+    const getPos: (id: string) => { x: number; y: number } = getPosFunc(
+      visState
+    );
 
     const getId = (state?: State) => (state ? state.id : undefined);
     const getNodeIdByName = (name: string) =>
@@ -20,7 +41,10 @@
           // nodes and edges:
           ...els,
           // nodes:
-          { data: { id: state.id, name: state.name } },
+          {
+            data: { id: state.id, name: state.name },
+            position: getPos(state.id),
+          },
           ...state.transitions
             // filter out transitions that contain non-existent targets
             .filter((tr) =>
@@ -42,9 +66,7 @@
 
     const cy = cytoscape({
       container: document.getElementById("viz"), // container to render in
-
       elements,
-
       style: [
         // the stylesheet for the graph
         {
@@ -82,109 +104,119 @@
       ],
 
       layout: {
-        name: "grid",
-        rows: 1,
+        name: "preset",
       },
     });
 
-    const layoutOptions = {
-      name: "cose",
-      // Called on `layoutready`
-      ready: function () {},
+    if (visState.pan) cy.pan(visState.pan);
+    if (visState.zoom) cy.zoom(visState.zoom);
 
-      // Called on `layoutstop`
-      stop: function () {},
+    const nodes: {
+      id: StateId;
+      position: { x: number; y: number };
+    }[] = cy.nodes().map((n) => ({ id: n.data("id"), position: n.position() }));
 
-      // Whether to animate while running the layout
-      // true : Animate continuously as the layout is running
-      // false : Just show the end result
-      // 'end' : Animate with the end result, from the initial positions to the end positions
-      animate: false,
+    // const layoutOptions = {
+    //   name: "cose",
+    //   // Called on `layoutready`
+    //   ready: function () {},
 
-      // Easing of the animation for animate:'end'
-      animationEasing: undefined,
+    //   // Called on `layoutstop`
+    //   stop: function () {},
 
-      // The duration of the animation for animate:'end'
-      animationDuration: undefined,
+    //   // Whether to animate while running the layout
+    //   // true : Animate continuously as the layout is running
+    //   // false : Just show the end result
+    //   // 'end' : Animate with the end result, from the initial positions to the end positions
+    //   animate: false,
 
-      // A function that determines whether the node should be animated
-      // All nodes animated by default on animate enabled
-      // Non-animated nodes are positioned immediately when the layout starts
-      animateFilter: function (node, i) {
-        return true;
-      },
+    //   // Easing of the animation for animate:'end'
+    //   animationEasing: undefined,
 
-      // The layout animates only after this many milliseconds for animate:true
-      // (prevents flashing on fast runs)
-      animationThreshold: 250,
+    //   // The duration of the animation for animate:'end'
+    //   animationDuration: undefined,
 
-      // Number of iterations between consecutive screen positions update
-      refresh: 20,
+    //   // A function that determines whether the node should be animated
+    //   // All nodes animated by default on animate enabled
+    //   // Non-animated nodes are positioned immediately when the layout starts
+    //   animateFilter: function (node, i) {
+    //     return true;
+    //   },
 
-      // Whether to fit the network view after when done
-      fit: true,
+    //   // The layout animates only after this many milliseconds for animate:true
+    //   // (prevents flashing on fast runs)
+    //   animationThreshold: 250,
 
-      // Padding on fit
-      padding: 30,
+    //   // Number of iterations between consecutive screen positions update
+    //   refresh: 20,
 
-      // Constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
-      boundingBox: undefined,
+    //   // Whether to fit the network view after when done
+    //   fit: true,
 
-      // Excludes the label when calculating node bounding boxes for the layout algorithm
-      nodeDimensionsIncludeLabels: true,
+    //   // Padding on fit
+    //   padding: 30,
 
-      // Randomize the initial positions of the nodes (true) or use existing positions (false)
-      randomize: false,
+    //   // Constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
+    //   boundingBox: undefined,
 
-      // Extra spacing between components in non-compound graphs
-      componentSpacing: 512,
+    //   // Excludes the label when calculating node bounding boxes for the layout algorithm
+    //   nodeDimensionsIncludeLabels: true,
 
-      // Node repulsion (non overlapping) multiplier
-      nodeRepulsion: function (node) {
-        return 32;
-      },
+    //   // Randomize the initial positions of the nodes (true) or use existing positions (false)
+    //   randomize: false,
 
-      // Node repulsion (overlapping) multiplier
-      nodeOverlap: 4,
+    //   // Extra spacing between components in non-compound graphs
+    //   componentSpacing: 512,
 
-      // Ideal edge (non nested) length
-      idealEdgeLength: function (edge) {
-        return 1;
-      },
+    //   // Node repulsion (non overlapping) multiplier
+    //   nodeRepulsion: function (node) {
+    //     return 32;
+    //   },
 
-      // Divisor to compute edge forces
-      edgeElasticity: function (edge) {
-        return 2048;
-      },
+    //   // Node repulsion (overlapping) multiplier
+    //   nodeOverlap: 4,
 
-      // Nesting factor (multiplier) to compute ideal edge length for nested edges
-      nestingFactor: 1.2,
+    //   // Ideal edge (non nested) length
+    //   idealEdgeLength: function (edge) {
+    //     return 1;
+    //   },
 
-      // Gravity force (constant)
-      gravity: 1,
+    //   // Divisor to compute edge forces
+    //   edgeElasticity: function (edge) {
+    //     return 2048;
+    //   },
 
-      // Maximum number of iterations to perform
-      numIter: 1000,
+    //   // Nesting factor (multiplier) to compute ideal edge length for nested edges
+    //   nestingFactor: 1.2,
 
-      // Initial temperature (maximum node displacement)
-      initialTemp: 1000,
+    //   // Gravity force (constant)
+    //   gravity: 1,
 
-      // Cooling factor (how the temperature is reduced between consecutive iterations
-      coolingFactor: 0.99,
+    //   // Maximum number of iterations to perform
+    //   numIter: 1000,
 
-      // Lower temperature threshold (below this point the layout will end)
-      minTemp: 1.0,
-    };
+    //   // Initial temperature (maximum node displacement)
+    //   initialTemp: 1000,
 
-    cy.layout(layoutOptions).run();
+    //   // Cooling factor (how the temperature is reduced between consecutive iterations
+    //   coolingFactor: 0.99,
+
+    //   // Lower temperature threshold (below this point the layout will end)
+    //   minTemp: 1.0,
+    // };
+
+    // cy.layout(layoutOptions).run();
 
     //@ts-expect-error
     cy.removeAllListeners();
     cy.nodes().addListener("dragfreeon", (e) => {
       e.stopPropagation();
       e.preventDefault();
-      console.log(e, e.target === cy);
+      storeVis(cy);
     });
+
+    //TODO: This can be made more preformant by storing only pan & zoom in cookie
+    cy.on("viewport", () => storeVis(cy));
 
     // Style the start nodes
     const rootNodes = cy.nodes().roots();
@@ -198,9 +230,38 @@
       "border-style": "double",
       "border-color": "black",
     });
+
+    storeVis(cy);
   });
 
   // const outputUpdate = (e: Event) => console.log(e.target);
+
+  const storeVis = (cy: cytoscape.Core) => {
+    const nodes: {
+      id: StateId;
+      position: { x: number; y: number };
+    }[] = cy.nodes().map((n) => ({ id: n.data("id"), position: n.position() }));
+
+    const pan = cy.pan();
+    const zoom = cy.zoom();
+
+    const vizCookie = `qdd_viz=${JSON.stringify({ nodes, pan, zoom })}`;
+    const vizlessCookies = document.cookie
+      .split(";")
+      .map((s) => !s.trim().startsWith("qdd_viz="))
+      .join(";");
+    document.cookie = `${vizCookie};${vizlessCookies}`;
+  };
+
+  const recoverVis = () => {
+    const vizCookieValue = document.cookie
+      .split(";")
+      .filter((s) => s.trim().startsWith("qdd_viz="))
+      .map((s) => s.split("="))
+      .map((a) => a[1])
+      .reduce((s, a) => a, "[]");
+    return JSON.parse(vizCookieValue);
+  };
 </script>
 
 <aside>

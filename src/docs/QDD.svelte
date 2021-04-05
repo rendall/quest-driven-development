@@ -36,11 +36,7 @@
   const populateData = (qData: string) => (quest = JSON.parse(qData) as Quest);
   const storeQuest = () => {
     const questCookie = `quest=${JSON.stringify(quest)}`;
-    const questlessCookies = document.cookie
-      .split(";")
-      .filter((s) => !s.trim().startsWith("quest="))
-      .join(";");
-    document.cookie = `${questCookie};${questlessCookies}`;
+    document.cookie = `${questCookie}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
   };
   const recoverQuest = () => {
     const questStr = document.cookie
@@ -51,8 +47,11 @@
       .map(([k, v]) => v);
 
     const hasCookie = questStr && Array.isArray(questStr);
-    if (hasCookie) quest = JSON.parse(questStr[0]);
-    console.log({ hasCookie, quest });
+    try {
+      if (hasCookie) quest = JSON.parse(questStr[0]);
+    } catch (error) {
+      console.error(`Could not recover quest ${questStr}`);
+    }
   };
 
   const onImportChange = (e: Event) => {

@@ -108,18 +108,24 @@
       },
     });
 
-    if (visState.pan) cy.pan(visState.pan);
-    if (visState.zoom) cy.zoom(visState.zoom);
+    const isPositioned = (
+      element: cytoscape.NodeSingular | cytoscape.EdgeSingular
+    ) =>
+      element.isEdge()
+        ? isPositioned(element.target()) && isPositioned(element.source())
+        : element.position() &&
+          !(element.position().x === 0 && element.position().y === 0);
 
-    const isPositioned = (node: cytoscape.NodeSingular) =>
-      node.position() && !(node.position().x === 0 && node.position().y === 0);
+    const unPositionedElements = cy
+      .elements()
+      .difference(cy.elements().filter(isPositioned));
 
-    const unPositionedNodes = cy
-      .nodes()
-      .difference(cy.nodes().filter(isPositioned));
+    //@ts-expect-error
+    cy.removeAllListeners();
 
     const layoutOptions = {
       name: "cose",
+      row: 4,
       // Called on `layoutready`
       ready: function () {},
 
@@ -207,10 +213,11 @@
       minTemp: 1.0,
     };
 
-    unPositionedNodes.layout(layoutOptions).run();
+    unPositionedElements.layout(layoutOptions).run();
 
-    //@ts-expect-error
-    cy.removeAllListeners();
+    if (visState.pan) cy.pan(visState.pan);
+    if (visState.zoom) cy.zoom(visState.zoom);
+
     cy.nodes().addListener("dragfreeon", (e) => {
       e.stopPropagation();
       e.preventDefault();
@@ -248,11 +255,7 @@
     const zoom = cy.zoom();
 
     const vizCookie = `qdd_viz=${JSON.stringify({ nodes, pan, zoom })}`;
-    const vizlessCookies = document.cookie
-      .split(";")
-      .map((s) => !s.trim().startsWith("qdd_viz="))
-      .join(";");
-    document.cookie = `${vizCookie};${vizlessCookies}`;
+    document.cookie = `${vizCookie}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
   };
 
   const recoverVis = () => {

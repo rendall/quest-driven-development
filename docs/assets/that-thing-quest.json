@@ -1,9 +1,10 @@
 {
-  "title": "That thing",
+  "title": "The Quest for That Thing",
   "description": "PC must do something or nothing about that thing.",
   "states": [
     {
-      "id": "started",
+      "id": "8e446b56-ed30-498b-b720-754e01d24d53",
+      "name": "started",
       "summary": "PC learns about the thing and starts the quest",
       "description": "Learning about the thing is arguably the hardest part.",
       "transitions": [
@@ -12,7 +13,8 @@
       ]
     },
     {
-      "id": "read",
+      "id": "e0be738b-e94a-4912-b976-f0ca7b850b35",
+      "name": "read",
       "summary": "PC reads about the thing",
       "description": "There is a book all about the thing. The PC picks up that book and reads it.",
       "transitions": [
@@ -21,7 +23,8 @@
       ]
     },
     {
-      "id": "searched",
+      "id": "2177632e-7dbc-4d3f-8656-ba312ea38787",
+      "name": "searched",
       "summary": "PC searches for the thing",
       "description": "The search is hard, but the thing must be searched for.",
       "transitions": [
@@ -31,7 +34,8 @@
       ]
     },
     {
-      "id": "found",
+      "id": "8961f6eb-2dfe-4d3a-9ec8-7b33dc92c842",
+      "name": "found",
       "summary": "PC finds the thing",
       "description": "After a long search with many travails, PC finds the thing!",
       "transitions": [
@@ -42,7 +46,8 @@
       ]
     },
     {
-      "id": "lost",
+      "id": "df520e83-5bd4-47bf-9958-9d6691b10e40",
+      "name": "lost",
       "summary": "PC loses the thing",
       "description": "That thing which is found can be lost again.",
       "transitions": [
@@ -51,7 +56,8 @@
       ]
     },
     {
-      "id": "sold",
+      "id": "b2a218fd-5201-406c-ae00-a7b585b224f0",
+      "name": "sold",
       "summary": "PC sells the thing",
       "description": "The thing is valuable, and is sold for a lot of money.",
       "transitions": [
@@ -60,7 +66,8 @@
       ]
     },
     {
-      "id": "kept",
+      "id": "2fce52c9-3903-4b6d-940f-62fae6816a51",
+      "name": "kept",
       "summary": "PC keeps the thing",
       "description": "PC decides that the thing is more valuable than mere money.",
       "transitions": [
@@ -70,7 +77,8 @@
       ]
     },
     {
-      "id": "bought",
+      "id": "37da5d05-b5cc-419f-aa0c-afb80c0725e2",
+      "name": "bought",
       "summary": "PC buys that thing",
       "description": "Having sold it, the PC wants it back after all.",
       "transitions": [
@@ -81,12 +89,14 @@
       ]
     },
     {
-      "id": "ended",
+      "id": "7f4c6fb6-674a-4fc5-99cc-fc57f64ed9d0",
+      "name": "ended",
       "summary": "PC ends the quest successfully",
       "description": "The thing has been found and dealt with."
     },
     {
-      "id": "gave-up",
+      "id": "5268373e-1d3b-42a9-af35-f2f45e3c9a7f",
+      "name": "gave-up",
       "summary": "PC gives up",
       "description": "As valuable as the thing might be, it is just not worth it."
     }

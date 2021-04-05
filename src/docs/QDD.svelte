@@ -2,17 +2,23 @@
   import type { Transition, Quest, State, StateId } from "./assets/QDD";
   import Visualizer from "./assets/Visualizer.svelte";
   import { saveAs } from "file-saver";
+  import { v4 as uuid } from "uuid";
+  import { beforeUpdate } from "svelte";
+
   const startState: State = {
-    id: "started",
+    id: uuid() as string,
+    name: "started",
     summary: "Inciting incident",
     description: "",
   };
 
-  let quest = {
+  let quest: Quest = {
     title: "",
     description: "",
     states: [startState],
   };
+
+  let recoverOnce = false;
 
   const collectData = () => quest;
 
@@ -28,35 +34,63 @@
   };
 
   const populateData = (qData: string) => (quest = JSON.parse(qData) as Quest);
+  const storeQuest = () => {
+    const questCookie = `quest=${JSON.stringify(quest)}`;
+    document.cookie = `${questCookie}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+  };
+  const recoverQuest = () => {
+    const questStr = document.cookie
+      .split(";")
+      .map((s) => s.trim())
+      .filter((s) => s.startsWith("quest="))
+      .map((kv) => kv.split("="))
+      .map(([k, v]) => v);
+
+    const hasCookie = questStr && Array.isArray(questStr);
+    try {
+      if (hasCookie) quest = JSON.parse(questStr[0]);
+    } catch (error) {
+      console.error(`Could not recover quest ${questStr}`);
+    }
+  };
 
   const onImportChange = (e: Event) => {
     const input = e.target as HTMLInputElement;
     const file = input.files[0];
     const reader = new FileReader();
-    reader.onload = (e) => populateData(e.target.result as string);
+    reader.onload = (e) => {
+      populateData(e.target.result as string);
+      storeQuest();
+    };
     reader.readAsText(file);
   };
 
   const onAddStateClick = (e: Event) => {
     const newState: State = {
-      id: `state-${quest.states.length}`,
+      id: uuid() as string,
+      name: `state-${quest.states.length}`,
       summary: "",
       description: "",
     };
 
     quest = { ...quest, states: [...quest.states, newState] };
+    storeQuest();
   };
 
-  const onRemoveStateClick = (stateId: StateId) => (e: Event) =>
-    (quest = {
+  const onRemoveStateClick = (stateId: StateId) => (e: Event) => {
+    quest = {
       ...quest,
       states: quest.states.filter((s) => s.id !== stateId),
-    });
+    };
+    //TODO: There should be an option to remove transitions referencing this removed state, or flagging them somehow
+    storeQuest();
+  };
+
   const onAddStateTransition = (state: State, i: Number) => () => {
     if (!state.transitions) state = { ...state, transitions: [] };
     const newTransition: Transition = [
       `action-${state.transitions.length}`,
-      state.id,
+      state.name,
     ];
     const owningState = {
       ...state,
@@ -66,6 +100,7 @@
       ...quest,
       states: quest.states.map((s, idx) => (idx === i ? owningState : s)),
     };
+    storeQuest();
   };
 
   const onRemoveStateTransition = (
@@ -81,7 +116,17 @@
       ...quest,
       states: quest.states.map((s, idx) => (idx === i ? newState : s)),
     };
+    storeQuest();
   };
+
+  beforeUpdate(() => {
+    if (!recoverOnce) {
+      recoverQuest();
+      recoverOnce = true;
+    }
+    //TODO: Oh... this does not seem performant
+    else storeQuest();
+  });
 </script>
 
 <div class="container">
@@ -96,14 +141,19 @@
       {#each quest.states as state, i}
         <li class="state">
           <label>
-            State: <input bind:value={state.id} />
+            State: <input bind:value={state.name} />
             <button on:click={onRemoveStateClick(state.id)}>
-              Remove {state.id}
+              Remove {state.name}
             </button>
           </label>
-          <label>Summary: <input bind:value={state.summary} /></label>
-          <label>Description: <textarea bind:value={state.description} /></label
-          >
+          <label>
+            Summary:
+            <input bind:value={state.summary} />
+          </label>
+          <label>
+            Description:
+            <textarea bind:value={state.description} />
+          </label>
           {#if !!state.transitions && state.transitions.length > 0}
             <table>
               <thead>

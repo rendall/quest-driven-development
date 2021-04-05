@@ -243,8 +243,6 @@
     storeVis(cy);
   });
 
-  // const outputUpdate = (e: Event) => console.log(e.target);
-
   const storeVis = (cy: cytoscape.Core) => {
     const nodes: {
       id: StateId;

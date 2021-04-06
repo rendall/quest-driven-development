@@ -22,13 +22,10 @@ The visualizer shows a directed graph, visualizing the contents of the builder. 
 
 #### Caveats and TODOs
 
-- The layout of the visualizer is reset with every change to the builder.
-  - The automatic layout should be better
-  - User layouts should be retained
+- The automatic layout should be better
+- The layout should center
 - The state names must be typed in completely.
   - The Action target fields should be drop-downs or auto-complete
-- Refreshing the browser resets the narrative
-  - Save the narrative in a cookie
 
 #### New Narrative
 

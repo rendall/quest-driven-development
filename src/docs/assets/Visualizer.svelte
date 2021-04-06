@@ -1,9 +1,11 @@
 <script lang="ts">
-  import cytoscape from "cytoscape";
-
-  import { afterUpdate } from "svelte";
+  import { afterUpdate, createEventDispatcher } from "svelte";
+  import cytoscape, { NodeSingular } from "cytoscape";
   import type { Quest, State, StateId, Transition } from "./QDD";
+
   export let quest: Quest;
+
+  const dispatch = createEventDispatcher();
 
   type VisState = {
     nodes: { id: string; position: { x: number; y: number } }[];
@@ -226,6 +228,11 @@
 
     //TODO: This can be made more preformant by storing only pan & zoom in cookie
     cy.on("viewport", () => storeVis(cy));
+
+    cy.nodes().on("select", (e) => {
+      const id = (e.target as NodeSingular).data().id;
+      dispatch("select", { id });
+    });
 
     // Style the start nodes
     const rootNodes = cy.nodes().roots();

@@ -5,6 +5,15 @@
   import { v4 as uuid } from "uuid";
   import { beforeUpdate } from "svelte";
 
+  let selectedId: StateId;
+
+  const handleNodeSelect = (event: CustomEvent) => {
+    const nodeId = (event.detail as { id: string }).id;
+    const li = document.getElementById(nodeId) as HTMLLIElement;
+    li.scrollIntoView({ behavior: "smooth" });
+    selectedId = nodeId;
+  };
+
   const startState: State = {
     id: uuid() as string,
     name: "started",
@@ -139,7 +148,10 @@
     <label>Description: <textarea bind:value={quest.description} /></label>
     <ul>
       {#each quest.states as state, i}
-        <li class="state">
+        <li
+          class="state {state.id === selectedId ? 'is-selected' : ''}"
+          id={state.id}
+        >
           <label>
             State: <input bind:value={state.name} />
             <button on:click={onRemoveStateClick(state.id)}>
@@ -187,7 +199,7 @@
       Export: <button on:click={onExportClick}>Choose download location</button>
     </label>
   </main>
-  <Visualizer {quest} />
+  <Visualizer {quest} on:select={handleNodeSelect} />
 </div>
 
 <style>

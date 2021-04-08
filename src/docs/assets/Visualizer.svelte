@@ -13,6 +13,10 @@
     zoom: number;
   };
 
+  let onCenterClick: (e: MouseEvent) => void;
+  let onResetClick: (e: MouseEvent) => void;
+  let onSnapshotClick: (e: MouseEvent) => void;
+
   afterUpdate(async () => {
     if (!quest.states) return;
 
@@ -67,7 +71,7 @@
       );
 
     const cy = cytoscape({
-      container: document.getElementById("viz"), // container to render in
+      container: document.getElementById("graph"), // container to render in
       elements,
       style: [
         // the stylesheet for the graph
@@ -234,6 +238,20 @@
       dispatch("select", { id });
     });
 
+    onSnapshotClick = (e: MouseEvent) => {
+      const blob = cy.png({ full: true, bg: "#EEE", output: "blob", scale: 2 });
+      saveAs(blob, `${quest.title}.png`);
+    };
+
+    onCenterClick = (e: MouseEvent) => {
+      cy.center();
+      cy.fit();
+    };
+
+    onResetClick = (e: MouseEvent) => {
+      cy.layout(layoutOptions).run();
+    };
+
     // Style the start nodes
     const rootNodes = cy.nodes().roots();
     rootNodes.style("background-color", "lightgreen");
@@ -259,23 +277,30 @@
     const pan = cy.pan();
     const zoom = cy.zoom();
 
-    const vizCookie = `qdd_viz=${JSON.stringify({ nodes, pan, zoom })}`;
-    document.cookie = `${vizCookie}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+    const graphCookie = `qdd_graph=${JSON.stringify({ nodes, pan, zoom })}`;
+    document.cookie = `${graphCookie}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
   };
 
   const recoverVis = () => {
-    const vizCookieValue = document.cookie
+    const graphCookieValue = document.cookie
       .split(";")
-      .filter((s) => s.trim().startsWith("qdd_viz="))
+      .filter((s) => s.trim().startsWith("qdd_graph="))
       .map((s) => s.split("="))
       .map((a) => a[1])
       .reduce((s, a) => a, "[]");
-    return JSON.parse(vizCookieValue);
+    return JSON.parse(graphCookieValue);
   };
 </script>
 
 <aside>
-  <div>{quest.title}</div>
+  <header>
+    <h2>{quest.title}</h2>
+    <div class="button-group">
+      <button on:click={onCenterClick}>center</button>
+      <button on:click={onSnapshotClick}>snapshot</button>
+      <button on:click={onResetClick}>reset</button>
+    </div>
+  </header>
   <!-- <input
     type="range"
     id="fader"
@@ -289,18 +314,7 @@
     on:input={outputUpdate}
   />
   <output for="fader" id="volume">{sliderValue}</output> -->
-  <div id="viz" />
+  <div id="graph" />
 </aside>
 
-<style>
-  aside {
-    flex-grow: 1;
-  }
-
-  #viz {
-    background-color: whitesmoke;
-    width: 100%;
-    min-height: 100vh;
-    position: fixed;
-  }
-</style>
+<style></style>

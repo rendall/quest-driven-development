@@ -6,7 +6,7 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-This is a placeholder for concepts and code related to Quest Driven Development.
+This is the repository for concepts and code related to Quest Driven Development, which is discussed here: <https://blog.rendall.dev/posts/2021/3/15/quest-driven-development/>
 
 ## Builder and Visualizer
 

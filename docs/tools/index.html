@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"/><title>Quest Driven Development</title><style>#graph {
+<!doctype html><html><head><meta charset="utf-8"/><title>Quest Driven Development</title><link rel="preconnect" href="https://fonts.gstatic.com"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet"><style>#graph {
       background-color: whitesmoke;
       min-height: 100vh;
     }
@@ -6,6 +6,7 @@
 
     .is-selected {
       background-color: lightgray;
+      box-shadow: -0.25rem 0.75rem 1.75rem -0.5rem rgba(0, 0, 0, 0.43);
     }
 
     .state {
@@ -28,16 +29,25 @@
     }
 
     aside>header {
-      background-color: aqua;
+      background-color: gray;
+      color: white;
       display: flex;
       flex-direction: column;
       height: 5rem;
       justify-content: space-evenly;
+      padding-left: 1rem;
       z-index: 1;
     }
 
     body {
       margin: 0;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 300;
+    }
+
+    input,
+    textarea {
+      font-family: 'Courier New', Courier, monospace;
     }
 
     button {
@@ -117,4 +127,9 @@
       width: 100%;
       min-height: 3rem;
       margin-left: 0.5rem;
+    }
+
+    ul {
+      margin: 1rem;
+      padding: 0;
     }</style><script defer="defer" src="../assets/QDD.js"></script></head><body></body></html>
